@@ -24,7 +24,7 @@ An AI-powered Slack assistant that helps teams streamline communication, summari
 
 | Slack Login | Message Summarization | Calendar Integration |
 |-------------|-----------------------|-----------------------|
-| <img src="/slack_login.png" width="300"> | <img src="/summarize.png" width="300"> | <img src="assets/calendar.png" width="300"> |
+| <img src="/slack_login.png" width="300"> | <img src="/summarize.png" width="300"> | <img src="/calendar.png" width="300"> |
 
 ---
 
