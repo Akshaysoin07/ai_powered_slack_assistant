@@ -108,4 +108,4 @@ Acknowledgments 🙏
 Contact 📧
 ----------
 
-For questions or feedback:📩 [your.email@example.com](https://mailto:akshaysoin1995@gmail.com/)🔗 [LinkedIn Profile](https://linkedin.com/in/your-profile)🐙 [GitHub Profile](https://github.com/Akshaysoin07)
+For questions or feedback:📩 [akshaysoin1995@gmail.com](https://mailto:akshaysoin1995@gmail.com/)🔗 [LinkedIn Profile](https://linkedin.com/in/your-profile)🐙 [GitHub Profile](https://github.com/Akshaysoin07)
