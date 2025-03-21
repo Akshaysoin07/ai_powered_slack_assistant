@@ -15,14 +15,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch(`/slack/messages?channel_id=${'channelId'}`, {
+            const response = await fetch(`/slack/messages?channel_id=${channelId}`, {
                 credentials: "include",  // Ensure cookies/sessions are sent
             });
 
             if (!response.ok) throw new Error("Error fetching messages");
             
-            const data = await response.text();
-            document.getElementById("messages").innerText = JSON.stringify(data, null, 2);
+            const data = await response.json(); // Parse JSON instead of text
+
+			// Ensure messages exist and extract text
+			if (data.messages && Array.isArray(data.messages)) {
+    			const messageTexts = data.messages.map(msg => msg.text).join("\n"); 
+    			document.getElementById("messages").innerText = messageTexts;
+			} else {
+    			document.getElementById("messages").innerText = "No messages found.";
+			}
+
+			
         } catch (error) {
             console.error(error);
             alert("Failed to fetch messages.");
@@ -33,22 +42,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("summarize").addEventListener("click", async (event) => {
     event.preventDefault();
 
-    const messagesText = document.getElementById("messages").innerText;
-    let messagesArray;
-
-    try {
-        const parsedData = JSON.parse(messagesText);
-        messagesArray = parsedData.messages.map(msg => msg.text) || []; // Extract only text values
-    } catch (error) {
-        console.error("Invalid JSON format in messages:", error);
-        alert("Failed to parse messages. Ensure messages are properly fetched.");
-        return;
-    }
-
-    if (messagesArray.length === 0) {
+    // Fetch the messages text directly
+    const messagesText = document.getElementById("messages").innerText.trim();
+    
+    if (!messagesText) {
         alert("No messages to summarize.");
         return;
     }
+
+    // Convert the plain text into an array of messages
+    const messagesArray = messagesText.split("\n").filter(text => text.trim() !== ""); // Split by new lines
 
     try {
         const response = await fetch("/ai/summarize", {
@@ -56,16 +59,22 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ messages: messagesArray }),  // Ensure correct format
         });
+        
+		// ✅ Log full response for debugging
+		const responseText = await response.text();
+		console.log("Raw API Response:", responseText);
 
-        if (!response.ok) throw new Error("Error generating summary");
+		if (!response.ok) {
+    		console.error("Summarization API Error:", response.status, response.statusText);
+    		throw new Error(`Error generating summary: ${responseText}`);
+		}
 
-        const data = await response.json();
-        document.getElementById("summary").innerText = data.summary;  // ✅ Extract the "summary" field properly
+
     } catch (error) {
-        console.error(error);
+        console.error("Summarization error:", error);
         alert("Failed to summarize messages.");
     }
-	});
+});
 
 
 
