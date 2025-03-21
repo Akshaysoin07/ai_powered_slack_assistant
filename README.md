@@ -21,17 +21,17 @@ An AI-powered Slack assistant that helps teams streamline communication, summari
 ---
 
 ## Screenshots/GIFs 🖼️
-<!-- Replace these placeholders with your own images -->
+
 | Slack Login | Message Summarization | Calendar Integration |
 |-------------|-----------------------|-----------------------|
-| <img src="assets/slack-login.png" width="300"> | <img src="assets/summarize.png" width="300"> | <img src="assets/calendar.png" width="300"> |
+| <img src="/slack_login.png" width="300"> | <img src="assets/summarize.png" width="300"> | <img src="assets/calendar.png" width="300"> |
 
 ---
 
 ## Installation 🛠️
 
 ### 1. Clone the Repository
-    git clone https://github.com/your-username/ai-slack-assistant.git
+    git clone https://github.com/Akshaysoin07/ai_powered_slack_assistant.git
     cd ai-slack-assistant
 
 ### 2\. Install Dependencies
@@ -93,7 +93,7 @@ Contributing 🤝
 License 📄
 ----------
 
-This project is licensed under the MIT License. See [LICENSE](https://license/) for details.
+This project is licensed under the MIT License. See [LICENSE](/LICENSE) for details.
 
 Acknowledgments 🙏
 ------------------
