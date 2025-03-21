@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+httpx
+authlib
+starlette
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+google-auth-transport-requests
+fastapi[all]  # Includes CORS middleware support

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Powered Slack Assistant</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>AI-Powered Slack Assistant</h1>
+
+        <!-- Slack Login -->
+        <div class="section">
+            <h2>Slack Login</h2>
+            <button id="slack-login">Login with Slack</button>
+        </div>
+
+        <!-- Fetch Slack Messages -->
+        <div class="section">
+            <h2>Fetch Slack Messages</h2>
+            <input type="text" id="channel-id" placeholder="Enter Channel ID">
+            <button id="fetch-messages">Fetch Messages</button>
+            <div id="messages"></div>
+        </div>
+
+        <!-- Summarize Messages -->
+        <div class="section">
+            <h2>Summarize Messages</h2>
+            <button id="summarize">Summarize</button>
+            <div id="summary"></div>
+        </div>
+
+        <!-- Create Google Calendar Event -->
+        <div class="section">
+            <h2>Create Google Calendar Event</h2>
+            <input type="text" id="event-summary" placeholder="Event Summary">
+            <input type="datetime-local" id="start-time">
+            <input type="datetime-local" id="end-time">
+            <button id="create-event">Create Event</button>
+            <div id="event-status"></div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
