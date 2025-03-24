@@ -97,7 +97,7 @@ async def refresh_google_token(refresh_token: str):
 # Slack Authentication Endpoint
 @app.get("/api/slack/login")  # Note the /api prefix
 async def slack_login(request: Request):
-    redirect_uri = "https://your-vercel-app-url.vercel.app/api/slack/callback"
+    redirect_uri = "https://ai-powered-slack-assistant.vercel.app/api/slack/callback"
     return await oauth.slack.authorize_redirect(request, redirect_uri)
 	
 @app.get("/slack/callback")
