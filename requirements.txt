@@ -7,5 +7,7 @@ starlette
 google-auth
 google-auth-oauthlib
 google-auth-httplib2
-google-auth-transport-requests
+google-auth>=2.0.0
+requests>=2.0.0
+google-api-python-client>=2.0.0
 fastapi[all]  # Includes CORS middleware support
