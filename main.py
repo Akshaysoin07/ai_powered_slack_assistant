@@ -31,7 +31,7 @@ app.add_middleware(
 app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY"))
 
 # Serve the frontend files
-app.mount("/static", StaticFiles(directory="/"), name="static")
+app.mount("/", StaticFiles(directory=".", html=True), name="frontend")
 
 # Root endpoint to serve the frontend
 @app.get("/")
@@ -95,10 +95,11 @@ async def refresh_google_token(refresh_token: str):
     return credentials.token
 
 # Slack Authentication Endpoint
-@app.get("/slack/login")
+@app.get("/api/slack/login")  # Note the /api prefix
 async def slack_login(request: Request):
-    return await oauth.slack.authorize_redirect(request, "https://slack.com/oauth/authorize")
-
+    redirect_uri = "https://your-vercel-app-url.vercel.app/api/slack/callback"
+    return await oauth.slack.authorize_redirect(request, redirect_uri)
+	
 @app.get("/slack/callback")
 async def slack_callback(request: Request):
     token = await oauth.slack.authorize_access_token(request)
