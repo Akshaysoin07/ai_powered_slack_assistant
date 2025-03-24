@@ -97,7 +97,7 @@ async def refresh_google_token(refresh_token: str):
 # Slack Authentication Endpoint
 @app.get("/slack/login")
 async def slack_login(request: Request):
-    return await oauth.slack.authorize_redirect(request, "https://<add_your_hosting_url>/slack/callback")
+    return await oauth.slack.authorize_redirect(request, "https://ai-powered-slack-assistant.vercel.app/slack/callback")
 
 @app.get("/slack/callback")
 async def slack_callback(request: Request):
@@ -112,7 +112,7 @@ async def slack_callback(request: Request):
 # Google Authentication Endpoint
 @app.get("/google/login")
 async def google_login(request: Request):
-    return await oauth.google.authorize_redirect(request, "https://<add_your_hosting_url>/google/callback")
+    return await oauth.google.authorize_redirect(request, "https://ai-powered-slack-assistant.vercel.app/google/callback")
 
 @app.get("/google/callback")
 async def google_callback(request: Request):
