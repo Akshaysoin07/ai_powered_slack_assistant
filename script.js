@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Slack Login
     document.getElementById("slack-login").addEventListener("click", (event) => {
         event.preventDefault(); // Prevent default behavior
-        window.location.href = "/slack/login"; // Redirect to Slack OAuth URL
+        window.location.href = "/api/slack/login"; // Redirect to Slack OAuth URL
     });
 
     // Fetch Slack Messages
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         try {
-            const response = await fetch(`/slack/messages?channel_id=${channelId}`, {
+            const response = await fetch(`/api/slack/messages?channel_id=${channelId}`, {
                 credentials: "include",  // Ensure cookies/sessions are sent
             });
 
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const messagesArray = messagesText.split("\n").filter(text => text.trim() !== ""); // Split by new lines
 
     try {
-        const response = await fetch("/ai/summarize", {
+        const response = await fetch("/api/ai/summarize", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ messages: messagesArray }),  // Ensure correct format
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-        const response = await fetch("/calendar/event", {
+        const response = await fetch("/api/calendar/event", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
