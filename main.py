@@ -31,8 +31,8 @@ app.add_middleware(
 app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY"), session_cookie="session_id")
 
 # Serve the frontend files
-app.mount("/", StaticFiles(directory=".", html=True), name="static")
-
+#app.mount("/", StaticFiles(directory=".", html=True), name="static")
+app.mount("/static", StaticFiles(directory="."), name="static")
 # Root endpoint to serve the frontend
 @app.get("/")
 async def read_index():
@@ -94,6 +94,17 @@ async def refresh_google_token(refresh_token: str):
     # Return the new access token
     return credentials.token
 
+# Add this before your root endpoint
+@app.get("/styles.css")
+async def get_css():
+    with open("styles.css", "r") as f:
+        return Response(content=f.read(), media_type="text/css")
+
+@app.get("/script.js")
+async def get_js():
+    with open("script.js", "r") as f:
+        return Response(content=f.read(), media_type="text/javascript")
+	    
 # Slack Authentication Endpoint
 @app.get("/api/slack/login")  # Note the /api prefix
 async def slack_login(request: Request):
