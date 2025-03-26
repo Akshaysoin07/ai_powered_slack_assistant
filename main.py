@@ -31,12 +31,12 @@ app.add_middleware(
 app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY"))
 
 # Serve the frontend files
-app.mount("/", StaticFiles(directory=".", html=True), name="frontend")
+app.mount("/", StaticFiles(directory=".", html=True)
 
 # Root endpoint to serve the frontend
 @app.get("/")
 async def read_index():
-    with open("frontend/index.html", "r") as f:
+    with open("index.html", "r") as f:
         return HTMLResponse(content=f.read())
 
 # OAuth Setup
