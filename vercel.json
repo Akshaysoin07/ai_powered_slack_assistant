@@ -6,15 +6,15 @@
       "use": "@vercel/python"
     },
     {
-      "src": "*.html",
+      "src": "/(.*.js)",
       "use": "@vercel/static"
     },
     {
-      "src": "*.js",
+      "src": "/(.*.css)",
       "use": "@vercel/static"
     },
     {
-      "src": "*.css",
+      "src": "/(.*.html)",
       "use": "@vercel/static"
     }
   ],
@@ -24,15 +24,15 @@
       "dest": "main.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*\\.css)",
+      "src": "/(.*.js)",
       "headers": {
-        "Content-Type": "text/css"
+        "Content-Type": "text/javascript"
       },
       "continue": true
+    },
+    {
+      "src": "/",
+      "dest": "/index.html"
     }
   ]
 }
