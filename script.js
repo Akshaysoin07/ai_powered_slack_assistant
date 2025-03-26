@@ -23,10 +23,17 @@ document.addEventListener("DOMContentLoaded", () => {
             
             const data = await response.json(); // Parse JSON instead of text
 
-			// Ensure messages exist and extract text
+			// In the fetch-messages handler:
 			if (data.messages && Array.isArray(data.messages)) {
-    			const messageTexts = data.messages.map(msg => msg.text).join("\n"); 
-    			document.getElementById("messages").innerText = messageTexts;
+    			// Store raw messages in data attribute
+    			messagesContainer.dataset.messages = JSON.stringify(data.messages);
+    
+    			// Display to user
+    			const messageTexts = data.messages.map(msg => 
+        		`[${new Date(msg.ts * 1000).toLocaleString()}] ${msg.user || 'unknown'}: ${msg.text}`
+    			).join("\n");
+    
+    			messagesContainer.innerText = messageTexts;
 			} else {
     			document.getElementById("messages").innerText = "No messages found.";
 			}
@@ -39,43 +46,39 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Summarize Messages
-    document.getElementById("summarize").addEventListener("click", async (event) => {
+    
+document.getElementById("summarize").addEventListener("click", async (event) => {
     event.preventDefault();
 
-    // Fetch the messages text directly
-    const messagesText = document.getElementById("messages").innerText.trim();
+    // Get the raw messages data from the API response
+    const messagesContainer = document.getElementById("messages");
+    const rawMessages = messagesContainer.dataset.messages; // New line
     
-    if (!messagesText) {
-        alert("No messages to summarize.");
+    if (!rawMessages) {
+        alert("No messages to summarize. Fetch messages first!");
         return;
     }
-
-    // Convert the plain text into an array of messages
-    const messagesArray = messagesText.split("\n").filter(text => text.trim() !== ""); // Split by new lines
 
     try {
         const response = await fetch("/api/ai/summarize", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: messagesArray }),  // Ensure correct format
+            body: rawMessages // Send the original message data
         });
         
-		// ✅ Log full response for debugging
-		const responseText = await response.text();
-		console.log("Raw API Response:", responseText);
-
-		if (!response.ok) {
-    		console.error("Summarization API Error:", response.status, response.statusText);
-    		throw new Error(`Error generating summary: ${responseText}`);
-		}
-
-
+        const data = await response.json();
+        
+        if (!response.ok) {
+            console.error("API Error:", data.detail);
+            throw new Error(data.detail || "Summarization failed");
+        }
+        
+        document.getElementById("summary").innerText = data.summary;
     } catch (error) {
         console.error("Summarization error:", error);
-        alert("Failed to summarize messages.");
+        alert(error.message);
     }
 });
-
 
 
     document.getElementById("create-event").addEventListener("click", async (event) => {
