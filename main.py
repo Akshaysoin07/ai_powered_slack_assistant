@@ -100,7 +100,7 @@ async def slack_login(request: Request):
     redirect_uri = "https://ai-powered-slack-assistant.vercel.app/api/slack/callback"
     return await oauth.slack.authorize_redirect(request, redirect_uri)
 	
-@app.get("/slack/callback")
+@app.get("/api/slack/callback")
 async def slack_callback(request: Request):
     token = await oauth.slack.authorize_access_token(request)
     if not token:
@@ -111,11 +111,11 @@ async def slack_callback(request: Request):
     return SlackAuthResponse(access_token=token["access_token"], scope=token["scope"])
 
 # Google Authentication Endpoint
-@app.get("/google/login")
+@app.get("/api/google/login")
 async def google_login(request: Request):
-    return await oauth.google.authorize_redirect(request, "https://ai-powered-slack-assistant.vercel.app/google/callback")
+    return await oauth.google.authorize_redirect(request, "https://ai-powered-slack-assistant.vercel.app/api/google/callback")
 
-@app.get("/google/callback")
+@app.get("/api/google/callback")
 async def google_callback(request: Request):
     token = await oauth.google.authorize_access_token(request)
     if not token:
@@ -132,7 +132,7 @@ async def google_callback(request: Request):
     return {"message": "Google authentication successful", "token": token["access_token"]}
 
 # Slack Message Fetching Endpoint
-@app.get("/slack/messages")
+@app.get("/api/slack/messages")
 async def fetch_slack_messages(request: Request, channel_id: str):
     # Retrieve Slack token from session
     token = request.session.get("slack_token")
@@ -148,7 +148,7 @@ async def fetch_slack_messages(request: Request, channel_id: str):
         return response.json()
 
 # Google Calendar Event Creation
-@app.post("/calendar/event")
+@app.post("/api/calendar/event")
 async def create_calendar_event(request: Request, event: Event = Depends):
     # Retrieve Google token from session
     token = request.session.get("google_token")
@@ -197,7 +197,7 @@ async def create_calendar_event(request: Request, event: Event = Depends):
     
     
 # AI-Powered Message Summarization
-@app.post("/ai/summarize")
+@app.post("/api/ai/summarize")
 async def summarize_messages(messages: Dict = Body(...)):
     # Extract only the 'text' field from each message
     message_list: List[str] = [msg["text"] for msg in messages.get("messages", []) if "text" in msg]
