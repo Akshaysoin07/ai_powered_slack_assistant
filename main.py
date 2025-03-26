@@ -31,7 +31,8 @@ app.add_middleware(
 app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY"))
 
 # Serve the frontend files
-app.mount("/", StaticFiles(directory=".", html=True)
+app.mount("/", StaticFiles(directory="/"), name="static")
+#app.mount("/", StaticFiles(directory=".", html=True, )
 
 # Root endpoint to serve the frontend
 @app.get("/")
