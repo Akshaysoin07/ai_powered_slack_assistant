@@ -28,7 +28,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 
-app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY"))
+app.add_middleware(SessionMiddleware, secret_key=config("SECRET_KEY"), session_cookie="session_id")
 
 # Serve the frontend files
 app.mount("/", StaticFiles(directory=".", html=True), name="static")
