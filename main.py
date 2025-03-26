@@ -208,26 +208,52 @@ async def create_calendar_event(request: Request, event: Event = Depends):
     
     
 # AI-Powered Message Summarization
+# Update the summarization endpoint
 @app.post("/api/ai/summarize")
-async def summarize_messages(messages: Dict = Body(...)):
-    # Extract only the 'text' field from each message
-    message_list: List[str] = [msg["text"] for msg in messages.get("messages", []) if "text" in msg]
-
-    if not message_list:
-        raise HTTPException(status_code=400, detail="No valid messages found for summarization")
-
-    headers = {"Authorization": f"Bearer {config('OPENAI_API_KEY')}"}
-    payload = {
-        "model": "gpt-4o-mini",
-        "messages": [{"role": "user", "content": "Summarize the following: " + ' '.join(message_list)}],
-    }
-
-    async with httpx.AsyncClient() as client:
-        response = await client.post("https://api.openai.com/v1/chat/completions", json=payload, headers=headers)
-        if response.status_code != 200:
-            raise HTTPException(status_code=400, detail="Error generating summary")
-
-        return {"summary": response.json()["choices"][0]["message"]["content"]}
+async def summarize_messages(request: Request):
+    try:
+        # Get raw request body
+        body = await request.json()
+        
+        # Support both formats
+        if "messages" in body:
+            # Frontend-sent format
+            message_list = [msg.get("text") for msg in body["messages"] if msg.get("text")]
+        else:
+            # Direct text format
+            message_list = body.get("text", "").split("\n")
+        
+        if not message_list:
+            raise HTTPException(status_code=400, detail="No valid messages found")
+        
+        # Debugging logs
+        print(f"Received {len(message_list)} messages for summarization")
+        print("Sample message:", message_list[0][:50] + "...")
+        
+        # OpenAI API call
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://api.openai.com/v1/chat/completions",
+                headers={"Authorization": f"Bearer {config('OPENAI_API_KEY')}"},
+                json={
+                    "model": "gpt-4o-mini",
+                    "messages": [{
+                        "role": "user",
+                        "content": f"Summarize these messages concisely:\n{'\n'.join(message_list)}"
+                    }]
+                },
+                timeout=30
+            )
+            
+            if response.status_code != 200:
+                error_detail = response.json().get("error", {}).get("message", "Unknown error")
+                raise HTTPException(status_code=500, detail=f"OpenAI API Error: {error_detail}")
+            
+            return {"summary": response.json()["choices"][0]["message"]["content"]}
+            
+    except Exception as e:
+        print(f"Summarization error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
         
 # Root Endpoint
 @app.get("/api")
