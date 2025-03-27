@@ -24,19 +24,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = await response.json(); // Parse JSON instead of text
 
 			// In the fetch-messages handler:
-			if (data.messages && Array.isArray(data.messages)) {
-    			// Store raw messages in data attribute
-    			messagesContainer.dataset.messages = JSON.stringify(data.messages);
+		if (data.messages && Array.isArray(data.messages)) {
+    		// Store raw messages with text filtering
+    		const validMessages = data.messages.filter(msg => msg.text && msg.text.trim() !== "");
+    		messagesContainer.dataset.messages = JSON.stringify(validMessages);
     
-    			// Display to user
-    			const messageTexts = data.messages.map(msg => 
-        		`[${new Date(msg.ts * 1000).toLocaleString()}] ${msg.user || 'unknown'}: ${msg.text}`
-    			).join("\n");
+    		// Display formatted messages
+    		const messageTexts = validMessages.map(msg => 
+        	`[${new Date(parseFloat(msg.ts) * 1000).toLocaleString()}] ${msg.user || 'unknown'}: ${msg.text}`
+    		).join("\n");
     
-    			messagesContainer.innerText = messageTexts;
-			} else {
-    			document.getElementById("messages").innerText = "No messages found.";
-			}
+    		messagesContainer.innerText = messageTexts;
+		}
 
 			
         } catch (error) {
@@ -46,13 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Summarize Messages
-    
+
 document.getElementById("summarize").addEventListener("click", async (event) => {
     event.preventDefault();
 
-    // Get the raw messages data from the API response
+    // Get the stored raw messages
     const messagesContainer = document.getElementById("messages");
-    const rawMessages = messagesContainer.dataset.messages; // New line
+    const rawMessages = messagesContainer.dataset.messages;
     
     if (!rawMessages) {
         alert("No messages to summarize. Fetch messages first!");
@@ -60,10 +59,15 @@ document.getElementById("summarize").addEventListener("click", async (event) => 
     }
 
     try {
+        // Parse the raw messages and structure properly
+        const messagesArray = JSON.parse(rawMessages);
+        
         const response = await fetch("/api/ai/summarize", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: rawMessages // Send the original message data
+            body: JSON.stringify({
+                messages: messagesArray.filter(msg => msg.text && msg.text.trim() !== "")
+            })
         });
         
         const data = await response.json();
@@ -79,7 +83,6 @@ document.getElementById("summarize").addEventListener("click", async (event) => 
         alert(error.message);
     }
 });
-
 
     document.getElementById("create-event").addEventListener("click", async (event) => {
     event.preventDefault();
