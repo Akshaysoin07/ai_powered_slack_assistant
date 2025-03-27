@@ -26,6 +26,10 @@ An AI-powered Slack assistant that helps teams streamline communication, summari
 |-------------|-----------------------|-----------------------|
 | <img src="/slack_login.png" width="300"> | <img src="/summarize.png" width="300"> | <img src="/calendar.png" width="300"> |
 
+## Live Link 
+
+https://ai-powered-slack-assistant.vercel.app
+
 ---
 
 ## Installation 🛠️
