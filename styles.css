@@ -1,53 +1,112 @@
+:root {
+  --vercel-black: #000000;
+  --vercel-gray: #171717;
+  --vercel-border: rgba(255, 255, 255, 0.1);
+  --vercel-purple: #7928CA;
+  --vercel-pink: #FF0080;
+  --vercel-blue: #0070F3;
+  --vercel-font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: black;
-    margin: 0;
-    padding: 0;
+  font-family: var(--vercel-font);
+  background: var(--vercel-black);
+  color: white;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 768px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--vercel-gray);
+  border-radius: 12px;
+  border: 1px solid var(--vercel-border);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
-    text-align: center;
-    color: White;
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(45deg, var(--vercel-purple), var(--vercel-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .section {
-    margin-bottom: 20px;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid var(--vercel-border);
 }
 
 h2 {
-    color: White;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: rgba(255, 255, 255, 0.9);
 }
 
-input, button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 16px;
+input {
+  width: 100%;
+  padding: 0.875rem;
+  margin: 0.5rem 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--vercel-border);
+  border-radius: 6px;
+  color: white;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--vercel-blue);
+  box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
 }
 
 button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
+  width: 100%;
+  padding: 0.875rem;
+  margin: 0.5rem 0;
+  background: linear-gradient(45deg, var(--vercel-purple), var(--vercel-pink));
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+  opacity: 0.9;
+  transform: translateY(-1px);
 }
 
 #messages, #summary, #event-status {
-    margin-top: 10px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--vercel-border);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Vercel-style loading animation */
+@keyframes vercel-spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner {
+  animation: vercel-spin 1s linear infinite;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--vercel-blue);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
 }
